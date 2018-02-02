@@ -1,6 +1,11 @@
 FactoryBot.define do
   factory :question do
-    title Faker::StarWars.quote
-    body Faker::Lorem.paragraph
+    title 'QuestionTitle'
+    body 'QuestionBody'
+  end
+  
+  factory :invalid_question, class: "Question" do
+    title nil
+    body nil
   end
 end

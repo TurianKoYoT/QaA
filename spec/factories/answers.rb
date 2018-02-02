@@ -1,5 +1,9 @@
 FactoryBot.define do
   factory :answer do
-    body Faker::Lorem.paragraph
+    body 'AnswerBody'
+  end
+  
+  factory :invalid_answer, class: "Answer" do
+    body nil
   end
 end
