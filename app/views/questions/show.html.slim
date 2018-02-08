@@ -1,0 +1,22 @@
+h1= @question.title
+= @question.body
+
+- if current_user&.author_of?(@question)
+  = link_to "Delete Question", question_path(@question), method: :delete
+
+h2 Answers:
+- if @answers.present?
+  - @answers.each do |answer|
+    p=  answer.body
+    - if current_user&.author_of?(answer)
+      = link_to "Delete Answer", answer_path(answer), method: :delete
+
+- if user_signed_in?    
+  = form_for [@question, @answer] do |f|
+    = f.error_messages
+    .form-group
+      = f.label :body, "Answer text"
+      = f.text_area :body
+    = f.submit 'Submit'
+- else
+  = t('answers.create.not_signed_in')

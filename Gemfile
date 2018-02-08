@@ -30,6 +30,10 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
+gem 'devise'
+gem 'bootstrap-sass'
+gem 'jquery-rails'
+gem 'dynamic_form'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -48,6 +52,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'launchy'
 end
 
 group :development do
