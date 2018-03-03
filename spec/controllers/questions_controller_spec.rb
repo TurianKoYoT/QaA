@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:question) { create :question, question_attrs.merge(user: user) }
+  let(:question_attrs) { attributes_for :question }
+  let(:user) { create :user }
   
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    
+    let(:questions) { create_list(:question, 2, user: user) }
     
     before { get :index }
     
@@ -17,7 +20,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
   
-  describe 'GET #show' do    
+  describe 'GET #show' do 
     before { get :show, params: { id: question } }
     
     it 'assigns the requested questions to @question' do
@@ -30,6 +33,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
     
     it 'assigns a new Question to @question' do
@@ -42,13 +46,14 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'POST #create' do
+    before { sign_in(user) }
     context 'with valid attributes' do
       subject(:post_create) {
         post :create, params: { question: attributes_for(:question) }
       }
       
-      it 'saves the new question' do
-        expect { post_create }.to change(Question, :count).by(1)
+      it 'assigns question to user' do
+        expect { post_create }.to change( user.questions, :count ).by(1)
       end
       
       it 'redirect to show view' do
@@ -65,6 +70,38 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:invalid_question) }
         expect(response).to render_template 'new'
+      end
+    end
+  end
+  
+  describe 'DELETE #destroy' do
+    subject(:delete_destroy) { delete :destroy, params: { id: question } }
+    
+    context 'as author' do
+      before { sign_in(user) }
+      before { question }
+      
+      it 'destroys question' do
+        expect { delete_destroy }.to change(Question, :count).by(-1)
+      end
+    
+      it 'redirects to index view' do
+        delete_destroy
+        expect(response).to redirect_to questions_path
+      end
+    end
+    
+    context 'as wrong user' do
+      sign_in_as_wrong_user
+      
+      it 'does not destroy question' do
+        question
+        expect { delete_destroy }.to_not change(Question, :count)
+      end
+      
+      it 'redirects to show view' do
+        delete_destroy
+        expect(response).to redirect_to assigns(:question)
       end
     end
   end

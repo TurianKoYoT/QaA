@@ -1,10 +1,14 @@
-class QuestionsController < ApplicationController  
+class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :load_question, only: [ :show, :destroy ]
+  
   def index
     @questions = Question.all
   end
   
   def show
-    @question = Question.find(params[:id])
+    @answers = @question.answers.all
+    @answer = @question.answers.new
   end
   
   def new
@@ -12,15 +16,28 @@ class QuestionsController < ApplicationController
   end
   
   def create
-    @question = Question.create(question_params)
+    @question = Question.create(question_params.merge(user: current_user))
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: t('.successfull')
     else
       render :new
     end
-  end 
+  end
+  
+  def destroy
+    if current_user.author_of?(@question)
+      @question.destroy
+      redirect_to questions_path, notice: t('.successfull')
+    else
+      redirect_to @question
+    end
+  end
   
   private
+  
+  def load_question
+    @question = Question.find(params[:id])
+  end
 
   def question_params
     params.require(:question).permit(:title, :body)
