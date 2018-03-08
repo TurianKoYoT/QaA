@@ -10,7 +10,7 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in(user) }
     context 'with valid attributes' do
       subject(:post_create) {
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
       }
       
       it 'saves a new answer' do
@@ -21,15 +21,15 @@ RSpec.describe AnswersController, type: :controller do
         expect { post_create }.to change( user.answers, :count ).by(1)
       end
       
-      it 'redirects to question show view' do
+      it 'renders create template' do
         post_create
-        expect(response).to redirect_to question
+        expect(response).to render_template :create
       end
     end
     
     context 'with invalid attributes' do
       subject(:post_create) {
-        post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) }
+        post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
       }
       
       it 'does not save answer' do
@@ -40,7 +40,7 @@ RSpec.describe AnswersController, type: :controller do
         post_create
         expect(response).to render_template "questions/show"
       end
-    end  
+    end
   end
   
   describe 'DELETE #destroy' do

@@ -4,15 +4,12 @@ h1= @question.title
 - if current_user&.author_of?(@question)
   = link_to "Delete Question", question_path(@question), method: :delete
 
-h2 Answers:
-- if @answers.present?
-  - @answers.each do |answer|
-    p=  answer.body
-    - if current_user&.author_of?(answer)
-      = link_to "Delete Answer", answer_path(answer), method: :delete
+.answers
+  h2 Answers:
+  = render @question.answers
 
-- if user_signed_in?    
-  = form_for [@question, @answer] do |f|
+- if user_signed_in?
+  = form_for [@question, @answer], remote: true do |f|
     = f.error_messages
     .form-group
       = f.label :body, "Answer text"
