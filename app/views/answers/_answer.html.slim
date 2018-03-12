@@ -1,3 +1,24 @@
-p=  answer.body
-- if current_user&.author_of?(answer)
-  = link_to "Delete Answer", answer_path(answer), method: :delete
+- if answer.persisted?
+  div class="answer answer-#{answer.id}"
+    - if answer.best
+      p Best Answer
+    p=  answer.body
+    - if current_user&.author_of?(@question)
+      p= link_to 'Choose as best answer',
+                choose_best_answer_path(answer),
+                method: :post,
+                remote: true
+    - if current_user&.author_of?(answer)
+      p= link_to 'Edit',
+                '',
+                class: 'edit-answer-link',
+                data: { answer_id: answer.id }
+      p
+        = form_for [@question, answer],
+                   url: answer_path(answer, question_id: @question),
+                   remote: true,
+                   html: { id: "edit-answer-#{answer.id}"} do |f|
+          = f.label :body, "Answer"
+          = f.text_area :body
+          = f.submit "Save"
+      p= link_to "Delete Answer", answer_path(answer), method: :delete, remote: true

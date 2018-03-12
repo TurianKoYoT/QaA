@@ -1,4 +1,4 @@
-require "rails_helper"
+require_relative '../acceptance_helper'
 
 RSpec.feature "Sign up", %q(
   As a Guest

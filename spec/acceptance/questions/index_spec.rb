@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'List all questions', %q{
   As an user or guest
@@ -8,7 +8,7 @@ feature 'List all questions', %q{
   given(:user) { create(:user) }
   given!(:questions) { create_list(:question, 2) }
   
-  scenario 'Authenticated user sees all questions' do  
+  scenario 'Authenticated user sees all questions' do
     sign_in(user)
       
     check_questions_presence(questions)

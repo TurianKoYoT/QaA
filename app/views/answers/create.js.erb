@@ -1,2 +1,9 @@
-$('.answers').append('<%= j render @answer %>');
-$('#answer_body').val('');
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |message| %>
+    $('.answer-new-messages').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.answer-new-messages').html('<%= j t('answers.create.successfull') %>')
+  $('.answers').append('<%= j render @answer %>');
+  $('.answer-new-body').val('');
+<% end %>
