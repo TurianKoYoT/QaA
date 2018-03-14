@@ -1,18 +1,24 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_question, only: [ :create ]
-  before_action :load_answer, only: [ :destroy ]
+  before_action :load_question, only: [ :create, :update ]
+  before_action :load_answer, only: [ :destroy, :update, :choose_best ]
   
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user) )
   end
   
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      redirect_to question_path(@answer.question_id), notice: t('.successfull')
-    else
-      redirect_to question_path(@answer.question_id)
+    @answer.destroy if current_user.author_of?(@answer)
+  end
+  
+  def update
+    @answer.update(answer_params) if current_user.author_of?(@answer)
+  end
+  
+  def choose_best
+    @question = @answer.question
+    if current_user.author_of?(@question)
+      @answer.choose_best
     end
   end
   

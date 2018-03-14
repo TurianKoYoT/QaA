@@ -1,0 +1,14 @@
+<% if @question.errors.present? %>
+  <% @question.errors.full_messages.each do |message| %>
+    $('.question-messages').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.question-messages').html('<%= j t('questions.update.successfull') %>')
+  $('.question').html('<%= j render @question %>');
+  $('.edit-question-link').click(function(e) {
+      e.preventDefault();
+      $(this).hide();
+      answer_id = $(this).data('questionId');
+      $('form#edit-question').show();
+  });
+<% end %>

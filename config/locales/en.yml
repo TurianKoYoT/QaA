@@ -5,9 +5,13 @@ en:
     destroy:
       wrong_user: "You can't delete this question"
       successfull: "Question was deleted"
+    update:
+      successfull: "Your question was successfully updated"
   answers:
     create:
       successfull: "Your answer was successfully created"
       not_signed_in: "You can't answer questions. Sign in please."
     destroy:
       successfull: "Your answer was successfully deleted"
+    update:
+      successfull: "Your answer was successfully updated"

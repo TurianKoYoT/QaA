@@ -20,7 +20,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
   
-  describe 'GET #show' do 
+  describe 'GET #show' do
     before { get :show, params: { id: question } }
     
     it 'assigns the requested questions to @question' do
@@ -102,6 +102,46 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirects to show view' do
         delete_destroy
         expect(response).to redirect_to assigns(:question)
+      end
+    end
+  end
+  
+  describe 'PATCH #update' do
+    subject(:patch_update) { patch :update, params: { id: question, question: attributes_for(:question),  format: :js } }
+    subject(:patch_update_new_body) { patch :update, params: { id: question, question: { body: 'new body' }, format: :js } }
+
+    context 'as author' do
+      before { sign_in(user) }
+      
+      it 'assigns question to @question' do
+        patch_update
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes' do
+        patch_update_new_body
+        question.reload
+        expect(question.body).to eq 'new body'
+      end
+      
+      it 'renders update template' do
+        patch_update
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'as wrong user' do
+      sign_in_as_wrong_user
+      
+      it 'does not change question attributes' do
+        patch_update_new_body
+        question.reload
+        expect(question.body).to eq 'QuestionBody'
+      end
+      
+      it 'renders update template' do
+        patch_update
+        expect(response).to render_template :update
       end
     end
   end
