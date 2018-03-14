@@ -2,6 +2,8 @@
 .question
   h1= question.title
   = question.body
+  
+  = render 'partials/show_attachment', object: question
 
   - if current_user&.author_of?(question)
     = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }

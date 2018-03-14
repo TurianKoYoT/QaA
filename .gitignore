@@ -20,3 +20,6 @@
 
 # Ignore config files
 config/database.yml
+
+# Ignore upload files
+/public/uploads
