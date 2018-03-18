@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  include Votable
+
   has_many :answers, -> { with_best_answer }, dependent: :destroy
   has_many :attachments, dependent: :destroy, as: :attachable, inverse_of: :attachable
   belongs_to :user
