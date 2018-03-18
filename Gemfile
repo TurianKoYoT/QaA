@@ -34,6 +34,10 @@ gem 'devise'
 gem 'bootstrap-sass'
 gem 'jquery-rails'
 gem 'dynamic_form'
+gem 'carrierwave'
+gem 'database_cleaner'
+gem 'remotipart'
+gem 'cocoon'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

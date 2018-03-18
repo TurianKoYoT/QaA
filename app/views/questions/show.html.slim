@@ -11,6 +11,11 @@ h2 Answers:
     .form-group
       = f.label :body, "Answer text"
       = f.text_area :body, class: 'answer-new-body'
+      p Attachments:
+      = f.fields_for :attachments do |a|
+        = render 'partials/attachment_fields', f: a
+      .links
+        = link_to_add_association 'Add File', f, :attachments, partial: 'partials/attachment_fields'
     = f.submit 'Submit'
 - else
   = t('answers.create.not_signed_in')
