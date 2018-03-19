@@ -1,0 +1,47 @@
+div id="rating-#{lower_cased_class(votable)}-#{votable&.id}"
+  | Rating #{votable.rating}
+
+- if user_signed_in?
+  - unless current_user.author_of?(votable)
+    - unless current_user.voted_for(votable)
+      div id="vote-#{lower_cased_class(votable)}-#{votable&.id}"
+        =link_to '+1',
+          polymorphic_path([:vote, votable], value: 1),
+          remote: true,
+          method: :post,
+          class: 'vote-up'
+
+        =link_to '-1',
+          polymorphic_path([:vote, votable], value: -1),
+          remote: true,
+          method: :post,
+          class: 'vote-down'
+
+        =link_to 'Reset Vote',
+          polymorphic_path([:destroy_vote,  votable]),
+          remote: true,
+          method: :delete,
+          class: 'reset-vote',
+          style: 'display: none'
+
+    - else
+      div id="vote-#{lower_cased_class(votable)}-#{votable&.id}"
+        =link_to '+1',
+          polymorphic_path([:vote, votable], value: 1),
+          remote: true,
+          method: :post,
+          class: 'vote-up',
+          style: 'display: none'
+
+        =link_to '-1',
+          polymorphic_path([:vote, votable], value: -1),
+          remote: true,
+          method: :post,
+          class: 'vote-down',
+          style: 'display: none'
+
+        =link_to 'Reset Vote',
+          polymorphic_path([:destroy_vote,  votable]),
+          remote: true,
+          method: :delete,
+          class: 'reset-vote'
