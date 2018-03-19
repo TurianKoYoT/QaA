@@ -1,0 +1,12 @@
+ul class="comments-#{lower_cased_class(commentable)}-#{commentable.id}"
+  = render commentable.comments.ordered
+
+- if current_user
+  p= link_to 'Add a comment', '', class: 'add-comment-link', data: { commentable_id: commentable.id, commentable_type: lower_cased_class(commentable) }
+  p
+    = form_for commentable.comments.build, remote: true, html: { class: "comment-form", id: "add-comment-#{lower_cased_class(commentable)}-#{commentable.id}"} do |f|
+      = f.label :body, "Comment"
+      = f.text_area :body
+      = f.hidden_field :commentable_type, value: lower_cased_class(commentable)
+      = f.hidden_field :commentable_id, value: commentable.id
+      = f.submit "Submit comment"

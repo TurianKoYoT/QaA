@@ -1,5 +1,5 @@
 .question-messages
-.question
+.question data-question_id="#{question.id}"
   h1= question.title
   = question.body
   
@@ -7,11 +7,14 @@
 
   = render 'partials/votes', votable: question
 
-  - if current_user&.author_of?(question)
-    = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
-    p
-      = form_for question, url: question_path(question), method: :patch, remote: true, html: { id: "edit-question"} do |f|
-        = f.label :body, "Question"
-        = f.text_area :body
-        = f.submit "Save"
-    = link_to "Delete Question", question_path(question), method: :delete
+  = render 'comments/comments', commentable: question
+  
+  .edit-question
+    - if current_user&.author_of?(question)
+      = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
+      p
+        = form_for question, url: question_path(question), method: :patch, remote: true, html: { id: "edit-question"} do |f|
+          = f.label :body, "Question"
+          = f.text_area :body
+          = f.submit "Save"
+      = link_to "Delete Question", question_path(question), method: :delete

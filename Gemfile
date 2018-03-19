@@ -39,6 +39,9 @@ gem 'database_cleaner'
 gem 'remotipart'
 gem 'cocoon'
 
+gem 'skim'
+gem 'gon'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

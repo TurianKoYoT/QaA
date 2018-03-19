@@ -35,4 +35,29 @@ require_relative '../acceptance_helper'
      
      expect(page).to have_content I18n.t('devise.failure.unauthenticated')
    end
+   
+   context 'multiple sessions' do
+     scenario 'question appars on another user page', js: true do
+       Capybara.using_session('user') do
+         sign_in(user)
+         visit questions_path
+       end
+
+       Capybara.using_session('guest') do
+         visit questions_path
+       end
+
+       Capybara.using_session('user') do
+         click_on 'Ask question'
+         fill_in 'Title', with: 'Test question title'
+         fill_in 'Body', with: 'test text'
+         click_on "Create"
+         expect(page).to have_content 'Test question title'
+       end
+
+       Capybara.using_session('guest') do
+         expect(page).to have_content 'Test question title'
+       end
+     end
+   end
  end

@@ -30,4 +30,27 @@ feature 'Create answer', %q{
     visit question_path(question.id)
     expect(page).to have_content I18n.t('answers.create.not_signed_in')
   end
+
+  context 'multiple sessions' do
+    scenario 'answer appears on another user page', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Answer text', with: 'helpful answer'
+        click_on "Submit"
+        expect(page).to have_content 'helpful answer'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'helpful answer', count: 1
+      end
+    end
+  end
 end

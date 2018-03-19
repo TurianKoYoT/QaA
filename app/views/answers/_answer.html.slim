@@ -5,6 +5,8 @@
     p=  answer.body
 
     = render 'partials/show_attachment', object: answer
+    
+    = render 'comments/comments', commentable: answer
 
     - if current_user&.author_of?(@question)
       p= link_to 'Choose as best answer',
