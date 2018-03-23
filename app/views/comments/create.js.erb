@@ -1,0 +1,10 @@
+$("<%= ".comments-#{lower_cased_class(@commentable)}-#{@commentable.id}" %>").append('<%= j render @comment %>');
+$(".add-comment-link").show();
+$("<%= "#add-comment-#{lower_cased_class(@commentable)}-#{@commentable.id}" %>").hide();
+$('.add-comment-link').click(function(e) {
+    e.preventDefault();
+    $(this).hide();
+    commentable_id = $(this).data('commentableId');
+    commentable_type = $(this).data('commentableType');
+    $('form#add-comment-' + commentable_type + '-' + commentable_id).show();
+});

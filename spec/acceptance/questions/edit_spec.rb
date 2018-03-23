@@ -21,15 +21,17 @@ feature 'Edit question', %q{
     sign_in(user)
     visit question_path(question)
 
-    within '.question' do
+    within '.edit-question' do
       click_on 'Edit'
       fill_in 'Question', with: 'edited question'
       click_on 'Save'
-      expect(page).to_not have_content question.body
-      expect(page).to have_content 'edited question'
       expect(page).to_not have_selector 'textarea'
     end
-      expect(page).to have_content I18n.t('questions.update.successfull')
+    
+    expect(page).to_not have_content question.body
+    expect(page).to have_content 'edited question'
+
+    expect(page).to have_content I18n.t('questions.update.successfull')
   end
   
   scenario 'User tries to edit other user question' do

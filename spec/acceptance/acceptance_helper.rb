@@ -1,7 +1,9 @@
 require 'rails_helper'
-Capybara.javascript_driver = :webkit
 
 RSpec.configure do |config|
+  Capybara.javascript_driver = :webkit
+  Capybara.server = :puma
+
   config.include AcceptanceHelper, type: :feature
 
   config.use_transactional_fixtures = false

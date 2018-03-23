@@ -1,0 +1,41 @@
+- if gon.user_id != @answer.user_id
+  div class="answer answer-#{@answer.id}"
+    - if @answer.best
+      p Best Answer
+    p= @answer.body
+    
+    - if @attachments.present?
+      p Attachments:
+      ul
+        - for a in @attachments
+          div class="attachment-#{a.id}"
+            li= link_to a.file.identifier, a.file.url
+            - if gon.user_id == @answer.user_id
+              a data-remote="true" rel="nofollow" data-method="delete" href="/attachments/#{attachment.id}"
+                | Delete file
+    - if gon.user_id == @question.user_id
+      a  data-remote="true" data-method="post" href="/answers/#{@answer.id}/choose_best"
+        | Choose as best answer
+        
+    div id="rating-answer-#{@answer.id}"
+      | Rating #{@answer.rating}
+    - if gon.user_id && (@answer.user_id != gon.user_id)
+      div id="vote-answer-#{@answer.id}"
+        a.vote-up data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote?value=1"
+          | +1
+        a.vote-down data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote?value=-1"
+          | -1
+        a.reset-vote style="display: none" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}/destroy_vote"
+          | Reset Vote
+
+    - if gon.user_id == @answer.user_id
+      a.edit-answer-link data-answer-id="#{@answer.id}" href="#"
+        | Edit
+        
+    .edit-answer
+      form.edit_answer action="/answers/#{@answer.id}" data-remote="true" meghod="post" id="edit-answer-#{@answer.id}" accepts-charset="UTF-8"
+        input name="utf8" type="hidden" value="✓"
+        input type="hidden" name="_method" value="patch"
+        label for="answer_body"Answer
+        textarea name="answer[body]" id="answer_body" =@answer.body
+        input type="submit" name="commit" value="Save" data-disable-with="Save"
