@@ -12,7 +12,7 @@ h2 Answers:
       = f.label :body, "Answer text"
       = f.text_area :body, class: 'answer-new-body'
       p Attachments:
-      = f.fields_for :attachments do |a|
+      = f.fields_for :attachments, @answer.attachments.build do |a|
         = render 'partials/attachment_fields', f: a
       .links
         = link_to_add_association 'Add File', f, :attachments, partial: 'partials/attachment_fields'
