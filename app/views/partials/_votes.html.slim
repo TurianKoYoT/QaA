@@ -9,18 +9,21 @@ div id="rating-#{lower_cased_class(votable)}-#{votable&.id}"
           polymorphic_path([:vote, votable], value: 1),
           remote: true,
           method: :post,
+          data: {type: :json},
           class: 'vote-up'
 
         =link_to '-1',
           polymorphic_path([:vote, votable], value: -1),
           remote: true,
           method: :post,
+          data: {type: :json},
           class: 'vote-down'
 
         =link_to 'Reset Vote',
           polymorphic_path([:destroy_vote,  votable]),
           remote: true,
           method: :delete,
+          data: {type: :json},
           class: 'reset-vote',
           style: 'display: none'
 
@@ -30,6 +33,7 @@ div id="rating-#{lower_cased_class(votable)}-#{votable&.id}"
           polymorphic_path([:vote, votable], value: 1),
           remote: true,
           method: :post,
+          data: {type: :json},
           class: 'vote-up',
           style: 'display: none'
 
@@ -37,6 +41,7 @@ div id="rating-#{lower_cased_class(votable)}-#{votable&.id}"
           polymorphic_path([:vote, votable], value: -1),
           remote: true,
           method: :post,
+          data: {type: :json},
           class: 'vote-down',
           style: 'display: none'
 
@@ -44,4 +49,5 @@ div id="rating-#{lower_cased_class(votable)}-#{votable&.id}"
           polymorphic_path([:destroy_vote,  votable]),
           remote: true,
           method: :delete,
+          data: {type: :json},
           class: 'reset-vote'

@@ -2,7 +2,8 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_votable, only: [:vote, :destroy_vote]
+    before_action :load_votable, only: [:vote, :destroy_vote]
+    respond_to :json, only: [:vote]
   end
 
   def vote
@@ -10,12 +11,8 @@ module Voted
       return render(json: { message: 'error' }, status: :forbidden)
     end
 
-    @vote = current_user.votes.new(value: params[:value], votable: @votable)
-    if @vote.save
-      render json: { votable: @votable, vote: @vote }
-    else
-      render json: @vote.errors.full_messages, status: :unprocessable_entity
-    end
+    @vote = current_user.votes.create(value: params[:value], votable: @votable)
+    respond_with({vote: @vote, votable: @votable}, location: @votable)
   end
 
   def destroy_vote
@@ -23,10 +20,9 @@ module Voted
 
     return render(json: { message: 'error' }, status: :forbidden) unless @vote
 
-    if @vote.destroy
-      render json: { votable: @votable.reload, vote: @vote }
-    else
-      render json: @votable.errors.full_messages, status: :unprocessable_entity
+    @vote.destroy
+    respond_with @vote do |format|
+      format.json { render json: { vote: @vote, votable: @votable.reload} }
     end
   end
 
@@ -36,7 +32,7 @@ module Voted
     controller_name.classify.constantize
   end
 
-  def set_votable
+  def load_votable
     @votable = model_klass.find(params[:id])
   end
 end

@@ -7,23 +7,27 @@ class AnswersController < ApplicationController
 
   include Voted
   
+  respond_to :js
+  
   def create
-    @answer = @question.answers.create(answer_params.merge(user: current_user) )
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user) ))
   end
   
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    return unless current_user.author_of?(@answer)
+    respond_with(@answer.destroy)
   end
   
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    return unless current_user.author_of?(@answer)
+    @answer.update(answer_params)
+    respond_with(@answer)
   end
   
   def choose_best
     @question = @answer.question
-    if current_user.author_of?(@question)
-      @answer.choose_best
-    end
+    return unless current_user.author_of?(@question)
+    respond_with(@answer.choose_best)
   end
   
   private

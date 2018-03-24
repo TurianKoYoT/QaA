@@ -1,52 +1,51 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :load_question, only: [ :show, :update, :destroy ]
+  before_action :build_answer, only: [ :show ]
   
   after_action :publish_question, only: [:create]
   
   include Voted
-  
+
+  respond_to :js, only: [:update]
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
   
   def show
     @answers = @question.answers.all
-    @answer = @question.answers.new
-    @answer.attachments.build
+    respond_with @question
   end
   
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
   
   def create
-    @question = Question.create(question_params.merge(user: current_user))
-    if @question.save
-      redirect_to @question, notice: t('.successfull')
-    else
-      render :new
-    end
+    respond_with(@question = Question.create(question_params.merge(user: current_user)))
   end
   
   def update
-    @question.update(question_params) if current_user.author_of?(@question)
+    return unless current_user.author_of?(@question)
+    @question.update(question_params)
+    respond_with @question
   end
   
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: t('.successfull')
-    else
-      redirect_to @question
-    end
+    return unless current_user.author_of?(@question)
+    flash[:notice] = t('.successfull') if @question.destroy
+    respond_with(@question.destroy)
   end
   
   private
   
   def load_question
     @question = Question.find(params[:id])
+  end
+  
+  def build_answer
+    @answer = @question.answers.build
   end
 
   def publish_question

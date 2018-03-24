@@ -16,7 +16,7 @@ require_relative '../acceptance_helper'
      fill_in 'Title', with: 'Test question title'
      fill_in 'Body', with: 'test text'
      click_on "Create"
-     expect(page).to have_content I18n.t('questions.create.successfull')
+     expect(page).to have_content "Question was successfully created"
      expect(page).to have_content 'Test question title'
      expect(page).to have_content 'test text'
    end

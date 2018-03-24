@@ -33,11 +33,6 @@ shared_examples 'POST voted#vote' do
       it 'does not change votes' do
         expect { post_vote }.to_not change(Vote, :count)
       end
-      
-      it 'returns forbidden' do
-        post_vote
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
     end
   end
   

@@ -3,9 +3,11 @@ class CommentsController < ApplicationController
   before_action :load_commentable
 
   after_action :create_comment, only: [:create]
-  
+
+  respond_to :js
+
   def create
-    @comment = @commentable.comments.create(comment_params.merge(user: current_user))
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
   end
   
   private
