@@ -43,6 +43,10 @@ gem 'skim'
 gem 'gon'
 
 gem 'responders'
+
+gem 'omniauth'
+gem 'omniauth-vkontakte'
+gem 'omniauth-twitter'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -55,6 +59,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'capybara-webkit'
+  gem 'letter_opener'
+  gem 'capybara-email'
 end
 
 group :test do

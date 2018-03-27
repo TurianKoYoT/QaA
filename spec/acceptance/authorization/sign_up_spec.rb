@@ -14,7 +14,7 @@ RSpec.feature "Sign up", %q(
 
     click_on "Sign up"
 
-    expect(current_path).to eq root_path
-    expect(page).to have_content "Welcome! You have signed up successfully."
+    open_email(user[:email])
+    expect(current_email).to have_content 'Confirm my account'
   end
 end
