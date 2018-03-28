@@ -4,14 +4,16 @@ FactoryBot.define do
   end
   
   factory :user do
-    email 
+    email
     password '12345678'
     password_confirmation '12345678'
+    confirmed_at DateTime.now
   end
   
   factory :other_user, class: "User" do
     email
     password '123456'
     password_confirmation '123456'
+    confirmed_at DateTime.now
   end
 end

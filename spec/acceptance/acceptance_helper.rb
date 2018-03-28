@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+OmniAuth.config.test_mode = true
+
 RSpec.configure do |config|
   Capybara.javascript_driver = :webkit
   Capybara.server = :puma

@@ -1,0 +1,5 @@
+h2 Please add email for your account:
+= form_for :auth, url: update_user_path, method: :post do |f|
+  = f.label :email
+  = f.text_field :email
+  = f.submit 'Add'
