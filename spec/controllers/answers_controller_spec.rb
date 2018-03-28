@@ -67,11 +67,6 @@ RSpec.describe AnswersController, type: :controller do
         answer
         expect { delete_destroy }.to_not change(Answer, :count)
       end
-      
-      it 'renders destroy template' do
-        delete_destroy
-        expect(response).to render_template :destroy
-      end
     end
   end
 
@@ -109,9 +104,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq body
       end
       
-      it 'renders update template' do
+      it 'returns forbiddent status' do
         patch_update
-        expect(response).to render_template :update
+        expect(response).to have_http_status :forbidden
       end
     end
   end
@@ -147,11 +142,6 @@ RSpec.describe AnswersController, type: :controller do
         post_choose_best
         answer.reload
         expect(answer.best).to eq false
-      end
-      
-      it 'renders choose_best template' do
-        post_choose_best
-        expect(response).to render_template :choose_best
       end
     end
   end

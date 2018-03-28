@@ -91,3 +91,15 @@ shared_examples 'DELETE voted#destroy_vote' do
     end
   end
 end
+
+shared_examples 'voted ability' do
+  context 'vote' do
+    it { is_expected.to be_able_to :vote, other_user_votable, user: user }
+    it { is_expected.not_to be_able_to :vote, user_votable, user: user }
+  end
+
+  context 'destroy_vote' do
+    it { is_expected.to be_able_to :destroy_vote, other_user_votable, user: user }
+    it { is_expected.not_to be_able_to :destroy_vote, user_votable, user: user }
+  end
+end

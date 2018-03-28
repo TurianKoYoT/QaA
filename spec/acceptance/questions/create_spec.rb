@@ -31,9 +31,8 @@ require_relative '../acceptance_helper'
    
    scenario 'Non-authenticated user tries to create question' do
      visit questions_path
-     click_on 'Ask question'
-     
-     expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+
+     expect(page).to_not have_content 'Ask question'
    end
    
    context 'multiple sessions' do
