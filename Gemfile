@@ -49,6 +49,8 @@ gem 'omniauth-vkontakte'
 gem 'omniauth-twitter'
 
 gem 'cancancan'
+
+gem 'doorkeeper', '4.2.6'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -68,6 +70,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'launchy'
+  gem 'json_spec'
 end
 
 group :development do
