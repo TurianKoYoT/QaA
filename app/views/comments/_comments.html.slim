@@ -1,7 +1,7 @@
 ul class="comments-#{lower_cased_class(commentable)}-#{commentable.id}"
   = render commentable.comments.ordered
 
-- if current_user
+- if can?(:create, Comment)
   p= link_to 'Add a comment', '', class: 'add-comment-link', data: { commentable_id: commentable.id, commentable_type: lower_cased_class(commentable) }
   p
     = form_for commentable.comments.build, remote: true, html: { class: "comment-form", id: "add-comment-#{lower_cased_class(commentable)}-#{commentable.id}"} do |f|

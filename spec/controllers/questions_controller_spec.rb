@@ -133,11 +133,6 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
         expect(question.body).to eq 'QuestionBody'
       end
-      
-      it 'renders update template' do
-        patch_update
-        expect(response).to render_template :update
-      end
     end
   end
   

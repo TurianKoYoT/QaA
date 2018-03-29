@@ -9,6 +9,8 @@ class QuestionsController < ApplicationController
 
   respond_to :js, only: [:update]
 
+  load_and_authorize_resource
+
   def index
     respond_with(@questions = Question.all)
   end
@@ -27,13 +29,11 @@ class QuestionsController < ApplicationController
   end
   
   def update
-    return unless current_user.author_of?(@question)
     @question.update(question_params)
     respond_with @question
   end
   
   def destroy
-    return unless current_user.author_of?(@question)
     flash[:notice] = t('.successfull') if @question.destroy
     respond_with(@question.destroy)
   end

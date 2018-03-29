@@ -9,24 +9,23 @@ class AnswersController < ApplicationController
   
   respond_to :js
   
+  authorize_resource
+
   def create
     respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user) ))
   end
   
   def destroy
-    return unless current_user.author_of?(@answer)
     respond_with(@answer.destroy)
   end
   
   def update
-    return unless current_user.author_of?(@answer)
     @answer.update(answer_params)
     respond_with(@answer)
   end
   
   def choose_best
     @question = @answer.question
-    return unless current_user.author_of?(@question)
     respond_with(@answer.choose_best)
   end
   

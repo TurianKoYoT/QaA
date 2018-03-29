@@ -29,11 +29,6 @@ RSpec.describe AttachmentsController, type: :controller do
       it 'does not destroy attachment' do
         expect { delete_destroy }.to_not change(Attachment, :count)
       end
-
-      it 'renders destroy template' do
-        delete_destroy
-        expect(response).to render_template :destroy
-      end
     end
   end
 end
