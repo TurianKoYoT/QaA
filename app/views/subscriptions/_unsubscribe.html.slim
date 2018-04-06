@@ -1,0 +1,4 @@
+= link_to 'Unsubscribe',
+  subscription_path(current_user.subscription_to(question)),
+  method: :post,
+  remote: true
