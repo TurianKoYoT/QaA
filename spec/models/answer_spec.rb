@@ -36,4 +36,15 @@ RSpec.describe Answer, type: :model do
       expect(another_question_best).to be_best
     end
   end
+  
+  describe "#notify_subscriber" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    subject { build(:answer, question: question) }
+
+    it 'should notify subscribed user' do
+        expect(QuestionNotifierJob).to receive(:perform_later).with(subject)
+        subject.save!
+    end
+  end
 end

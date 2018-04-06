@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions
   
   def author_of?(object)
     object.user_id == id
@@ -35,5 +36,13 @@ class User < ApplicationRecord
     user.skip_confirmation! unless auth['unconfirm']
     user.authorizations.create!(provider: auth['provider'], uid: auth['uid'])
     user
+  end
+
+  def subscribed?(question)
+    subscriptions.where(question_id: question.id).exists?
+  end
+
+  def subscription_to(question)
+    subscriptions.where(question_id: question.id).first
   end
 end

@@ -129,5 +129,20 @@ describe Ability do
         it { is_expected.to be_able_to :create, comment_to_answer }
       end
     end
+
+    context 'Subscriptions' do
+      let(:question) { create :question}
+      let(:user_subscription) { create :subscription, question: question, user: user }
+      let(:other_user_subscription) { create :subscription, question: question, user: other_user }
+
+      context 'create' do
+        it { should be_able_to :create, Subscription }
+      end
+
+      context 'destroy' do
+        it { should be_able_to :destroy, user_subscription }
+        it { should_not be_able_to :destroy, other_user_subscription }
+      end
+    end
   end
 end
