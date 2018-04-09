@@ -9,6 +9,19 @@
 
   = render 'comments/comments', commentable: question
   
+  .subscribe
+    - if signed_in?
+      - if current_user.subscribed?(question)
+        = link_to 'Unsubscribe',
+          subscription_path(current_user.subscription_to(question)),
+          method: :delete,
+          remote: true
+      - else
+        = link_to 'Subscribe',
+          question_subscriptions_path(question),
+          method: :post,
+          remote: true
+
   .edit-question
     - if can?(:destroy, question)
       = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }

@@ -11,11 +11,20 @@ class Answer < ApplicationRecord
   
   validates :body, presence: true, length: { maximum: 2000 }
   
+  after_create :notify_subscribers
+  
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
+
   def choose_best
     ActiveRecord::Base.transaction do
       self.update!(best: true)
       self.question.answers.where.not(id: self.id).update_all(best: false)
     end
+  end
+
+  private
+
+  def notify_subscribers
+    QuestionNotifierJob.perform_later(self)
   end
 end
