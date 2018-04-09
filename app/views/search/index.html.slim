@@ -1,0 +1,12 @@
+= form_tag search_index_path, method: :get do
+  = label_tag :query, 'Search for'
+  = text_field_tag :query, @query
+  = label_tag :location, 'Type'
+  = select_tag :location, options_for_select(Search::LOCATION, @location)
+  = submit_tag 'Find'
+
+- if @results
+  ul
+    - @results.each do |result|
+      = result.class.to_s
+      = render result.class.name.underscore, result: result

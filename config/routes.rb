@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   resources :votes, only: [ :create ]
   
   resources :comments, only: [ :create ]
+
+  resources :search, only: [ :index ]
   
   namespace :api do
     namespace :v1 do
