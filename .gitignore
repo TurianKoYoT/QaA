@@ -20,6 +20,10 @@
 
 # Ignore config files
 config/database.yml
+config/*.sphinx.conf
+config/thinking_sphinx.yml
 
 # Ignore upload files
 /public/uploads
+
+db/sphinx

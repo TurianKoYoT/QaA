@@ -58,6 +58,9 @@ gem 'oj_mimic_json'
 gem 'sidekiq'
 gem 'whenever'
 
+gem 'mysql2'
+gem 'thinking-sphinx'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
