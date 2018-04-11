@@ -10,6 +10,7 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     subscription =  Subscription.find(params[:id])
+    @question = subscription.question
     respond_with(subscription.destroy)
   end
 end
