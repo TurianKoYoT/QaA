@@ -1,14 +1,15 @@
 .question-messages
 .question data-question_id="#{question.id}"
+  - cache question do
   h1= question.title
-  = question.body
-  
-  = render 'partials/show_attachment', object: question
+    = question.body
+
+    = render 'partials/show_attachment', object: question
+
+    = render 'comments/comments', commentable: question
 
   = render 'partials/votes', votable: question
 
-  = render 'comments/comments', commentable: question
-  
   .subscribe
     - if signed_in?
       - if current_user.subscribed?(question)
