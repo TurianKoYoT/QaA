@@ -2,11 +2,13 @@
   div class="answer answer-#{answer.id}"
     - if answer.best
       p Best Answer
-    p=  answer.body
 
-    = render 'partials/show_attachment', object: answer
-    
-    = render 'comments/comments', commentable: answer
+    - cache answer do
+      p=  answer.body
+
+      = render 'partials/show_attachment', object: answer
+      
+      = render 'comments/comments', commentable: answer
 
     - if can?(:choose_best, answer)
       p= link_to 'Choose as best answer',

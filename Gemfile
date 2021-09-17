@@ -67,6 +67,7 @@ gem 'dotenv-deployment', require: 'dotenv'
 gem 'therubyracer'
 
 gem 'unicorn'
+gem 'redis-rails'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
